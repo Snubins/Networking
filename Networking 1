@@ -1,0 +1,205 @@
+Networking Day 1: 
+
+#Bitshifting: Concept of moving the binary bit over by one place, positionally based.
+#The only need in the physical layer is the ability to transmit "on" and "off"
+
+Layer 1, Physical layer:
+
+Responsibilities: Hardware specifications, encoding and signalling, data transmission and reception, physical network design.
+
+Layer 2, Data link layer: OSI layer2
+
+Physical addressing, MAC addressing, LLC (Logical Link Control), VLAN networking is done here, ARP resolution (MAC addressing to IP Addressing) is done here.
+
+Layer 3, Network Layer: I don't know man
+
+Fragmentation: packets are fragemented into 1500 Byte packets for better transmission, The fragmentation header is set with more fragments, don't fragment flags. The fragmentation header offset tells what fragment it is and where to find the next fragment. The final fragment has the more fragment bit off as there is no more fragmented packets being sent. The offset acts as a control mechanism to ensure packets are in their proper order.
+
+IPV6 Headers: Big gay
+Hop Limit = TTL
+ICMP Traffic: Protocol, ping is part of ICMP, network diagnostics, traceroute
+
+Zero  Configuration: Concept that boxes work right off the shelf but not the best practice as defaults are easily exploitable
+
+Layer 4, Transport layer: TCP, UDP
+
+TCP: Flags: CWR, ECE, URG, ACK, PSH, RST, SYN, FIN
+UDP: Just get it there, maybe, take some data. Don't care. Real fast like.
+
+Layer 5, Session layer: 
+
+Socks, NetBIOS, PPTP/L2TP, RPC
+ 
+SMB: share drives
+RPC: Is a request, response protocol
+
+Layer 6, presentation layer: Translation, Formating(File types), Encoding(ASCII, EBCDIC, HEX, BASE64), encryption, compression
+
+Layer 7, application layer:
+FTP (TCP 20/21)
+FTP Messages: Commands, Reply codes
+FTP Modes: Active(Default), passive
+FTP Active issues: NAT and Firewall traversal issues, Complications with tunneling through SSH, Passive FTP solves issues related to Active mode and is most often used in modern systems
+Passive: Server only responds to queries, more secure or bypass certain issues
+
+SSH: 
+Messages provide: Client/Server authentication, Asymmetric or PKI for key exchange, Symmetric for session, User authentication, Data stream channeling
+SSH Architecture 1: 
+Server, Client, Session
+Keys: User key: for the user connecting
+Host Key: for the server
+SSH Architecture 2: 
+Known-Hosts Database - collection of host keys that the client and server use for mutual authentication. Keeping track of users who have connected for security purposes
+Agent - Stores keys as a convenience for users (prevents constant passphrase entry prompt)
+Config File: settings that exist on the client and server to dictate ssh configuration
+
+SSH Implementation Concers:
+Using password authentication only
+Key rotation
+Key management
+Implementation Specification (libssh, sshtrangerthings)
+
+Telnet port23: Unencrypted
+SMTP port 25: emails
+TACACS TCP49: 
+HTTP(S) (TCP 80(clear text), TCP 443(secure)):
+POP(TCP 110): emails
+IMAP(TCP 143)
+RDP(TCP 3389)
+DNS(TCP/UDP 53): 
+DNS zone transfer: DNS servers passing info, dynamic servers need to reach out to the root box to configure their understanding of the network
+DNS queries: Users requesting where something is
+DHCP(UDP 67/68): IP addresses can change on DHCP networks, hostnames might be more important for tracking on these kinds of networks
+TFTP(UDP 69): File transer, plain text
+RTP(UDP any above 1023)
+
+
+#Network Sniffing: 
+
+Capture Lilbraries: Libcap, winpcap, etc. libraries that make network sniffing possible
+
+Wireshark: we know what's up
+
+TCPDUMP: -XX converts hex and ascii and shows ethernet header -vv very verbose
+Read a pcap with tcpdump -r "pcap"
+can add port options like "port 80" to show only traffic on that port
+
+Berkely Packet Filters (BPF)
+#Requests a SOCK_RAW socket and  setsockopt calls SO_ATTACH_FILTER
+sock = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL))
+...
+setsockopt(sock, SOL_SOCKET, SO_ATTACH_FILTER, ...)
+
+Using BPFs with operators, bitmasking, and TCPDump creates a powerful tool for traffic filtering and parsing.
+tcpdump {A} [B:C] {D} {E} {F} {G}
+
+A = Protocol (ether | arp | ip | ip6 | icmp | tcp | udp)
+B = Header Byte offset
+C = optional: Byte Length. Can be 1, 2 or 4 (default 1)
+D = optional: Bitwise mask (&)
+E = Operator (= | == | > | < | <= | >= | != | () | << | >>)
+F = Result of Expresion
+G = optional: Logical Operator (&& ||) to bridge expressions
+
+Example:
+tcpdump 'ether[12:2] = 0x0800 && (tcp[2:2] != 22 && tcp[2:2] != 23)'
+
+Bitwise masking: 
+To filter down the the bit(s) and not just the byte.
+ip[0] & 0x0F > 0x05
+
+Filter logic, most exlcusive. All designated bit balues must be set; no others can be set.
+tcp[13] = 0x11
+--or--
+tcp[13] & 0xFF = 0x11
+
+Filter logic, less exclusive. All designated bits must be set; all others may be set
+tcp[13] & 0x11 = 0x11
+
+Filter Logic, least exclusive. At least one of the designated bits must be set to not equal 0; all others may be set
+tcp[13] & 0x11 != 0
+
+#Switch operation:
+
+Fast forward: only destination MAC
+Fragment  Free: First 64 bytes
+
+CAM TABLE:
+Learn - examine the source MAC Address
+Forward - examine the destination MAC address
+
+Spanning Tree Protocol (STP) - root decision process
+
+    1. Elect root Bridge
+
+    2. Identify the Root ports on non-root bridge
+
+    3. Identify the Designated port for each segment
+
+    4. Set alternate ports to blocking state
+    
+Layer 2 Discovery Protocols:
+
+    Cisco Discovery Protocol (CDP)
+
+    Foundry Discovery Protocol (FDP)
+
+    Link Layer Discovery Protocol(LLDP)
+    
+PORT SECURITY
+
+Modes
+
+    shutdown
+
+    restrict
+
+    protect
+
+Layer 3 Routing Protocols:
+
+Routing table, like a CAM table however it's done with IP addresses and networks not MAC addresses
+
+#Lowest administrative distsance has the highest priority
+#Metrics for administrative distance 
+    Hop
+
+    Bandwidth
+
+    Delay
+
+    Load
+
+    MTU
+
+    Reliability
+
+    Cost
+
+    Policy
+
+#BPF DEMO:
+Check for FIN flag being set: sudo tcpdump "tcp[13] & 0x01 = 0x01"
+Check Source Port: sudo tcpdump "tcp[0:2]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
