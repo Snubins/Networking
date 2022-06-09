@@ -1,0 +1,152 @@
+Network Recon: 
+
+Methods of Recon: Active, passive, internal, external
+
+Active: sending packets, very loud
+Passive: Listening to the network, takes longer, quieter
+Internal: DNS Queries, ARP Requests, Packet Sniffers
+External: Network scanning, DNS Lookups, Whois, Job Site Listings
+
+Passive More:
+
+Gathering info about targets without direct interaction
+Not as straight forward, and requres more thime than active
+Lower risk of discovery
+
+Passive recon involves identifying:
+#IP addresses and Sub-Domains
+#External and 3rd part sties
+#People and tech
+#Content of interest
+#Vulnerabilities
+
+Possible Tools for gathering:
+#WHOIS queries
+#Job site listings
+#Phone numbers
+#Google searches
+#Passive OS fingerprinting
+
+Passive external network recon:
+
+#Info gathered outside the network using passive methods
+#Allows for more efficient attacks and plans
+
+#DNS#
+
+Resolves hostnames to IP addresses
+RFC 3912
+WHOIS queries
+
+#DIG#
+
+Typically between primary and secondary DNS servers
+If allowed to transfer externally, hostnames, IPs, and IP blocks can be determined
+
+#Zone Transfer#
+Returns DNS info
+Supplements base queries
+
+#Host History#
+Netcraft
+Wayback machine
+
+#Google Dorking#
+Useful to find subdomains, technologies
+
+#Shodan#
+Reveals info about tech,remote access services, improperly configured services, and newtork infrastructer
+When selected can give additional inof and applicable vulnerabilites
+
+Network Scanning:
+Scannning Strategies
+#Remote to local
+#Local to remote
+#Local to local
+#Remote to remote
+
+Scanning Approaches
+#Aim
+Wide range target scan
+Target specific scan
+#Method
+Single source scan
+Distributed scan
+
+Network Scanning:
+#Broadcast Ping and Ping Sweep (a denied response implies the presence of a device and the type of device)
+#ARP scan (sending ARP requests on the local network to see what's there)
+#SYN Scan (SYN packet, looking for existence, banner grabbing from listening service, no info on service since no handshake)
+#Full connect scan(Louder and can be analyzed by the target network)
+#Null scan(TCP packet with no flag set, can be used to avoid firewalls)
+#FIN Scan(Trying to close a connection that doesn't exist, slightly stealthy, can avoidfirewalls)
+#XMAS tree scan(FIN/PHS/URG or all flags set packet)
+#UDP scan (Used to avoid statefull firewalls)
+#ACK/Window scan
+#RPC scan
+#FTP scan
+#Decoy scan
+#OS fingerprinting scan(Able to guess at what the OS of the target box is)
+#Version scan(Determine what services are running and their service)
+#Protocol Ping
+#Discovery Probes
+
+Network Mapping:
+
+wget allows to grap a file from a web server D
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
