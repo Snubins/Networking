@@ -1,0 +1,89 @@
+Networking Day 2: 
+
+Sockets: 
+
+    Stream Sockets - Connection oriented and sequenced; methods for connection establishment and tear-down. Used with TCP, SCTP, and Bluetooth.
+
+    Datagram Sockets - Connectionless; designed for quickly sending and receiving data. Used with UDP.
+
+    Raw Sockets - Direct sending and receiving of IP packets without automatic protocol-specific formatting.
+
+User space vs kernel space:
+
+    User Space Sockets
+
+        Stream Sockets
+
+        Datagram Sockets
+
+    Kernel Space Sockets
+
+        Raw Sockets
+
+Socket Creation and Privilege Level:
+
+    User Space Sockets - The most common sockets that do not require elevated privileges to perform actions on behalf of user applications.
+
+    Kernel Space Sockets - Attempts to access hardware directly on behalf of a user application to either prevent encapsulation/decapsulation or to create packets from scratch, which requires elevated privileges.
+
+Well known Ports: 0-1023
+
+
+
+
+
+
+Network Programming with Python3
+
+    Network sockets primarily use the Python3 Socket library and socket.socket function.
+
+import socket
+  s = socket.socket(socket.FAMILY, socket.TYPE, socket.PROTOCOL)
+  
+  The socket.socket Function
+
+    Inside the socket.socket. function, you have these arguments, in order:
+
+socket.socket([*family*[,*type*[*proto*]]])
+
+    family constants should be: AF_INET (default), AF_INET6, AF_UNIX
+
+    type constants should be: SOCK_STREAM (default), SOCK_DGRAM, SOCK_RAW
+
+    proto constants should be: 0 (default), IPPROTO_RAW
+
+
+Raw IPv4 sockets: 
+
+Raw Socket scripts must include the IP header and the next headers.
+
+Requires guidance from the "Request for Comments" (RFC)to follow header structure properly.
+
+    RFCs contain technical and organizational documents about the Internet, including specifications and policy documents.
+
+See RFC 791, Section 3 - Specification for details on how to construct an IPv4 header
+
+Raw socket use case: 
+
+
+    Testing specific defense mechanisms - such as triggering and IDS for an effect, or filtering
+
+    Avoiding defense mechanisms
+
+    Obfuscating data during transfer
+
+    Manually crafting a packet with the chosen data in header fields
+
+i dont even know bruh
+
+
+
+
+
+
+
+
+
+
+    
+  
