@@ -1,0 +1,109 @@
+SSH Tunneling:
+
+Provides authentication, encryption, and integrity
+Allows remote terminal sessions
+Used for tunneling
+Created as a secure replacement for berkely remote commands: rsh -replaced with ssh, provides a channel for runnign a shell on a remote computer
+
+SSH Port forwarding:
+
+Creates channels using SSH-CONN protocol
+Allows for tunneling of other services through SSH
+Provides insecure servies encryption
+
+Allows for tunneling other protocols  through SSH
+
+Syntax:
+
+ssh -p <optional alt port> <user>@<pivot ip> -L <local bind port>:<tgt ip>:<tgt port> -NT
+or
+ssh -L <local bind port>:<tgt ip>:<tgt port> -p <alt port> <user>@<pivot ip> -NT
+
+-L, local port bind, first part of the command, Parts: port not in use:target ip/hostname:target port on the target box, 2nd and third part are where its going
+
+SSH local port forwarding:
+Creates a local port (1111) on the local host that forwards to a target machine’s port 80.
+
+ssh student@172.16.82.106 -L 1111:localhost:80 -NT
+or
+ssh -L 1111:localhost:80 student@172.16.82.106 -NT
+
+-NT, no terminal
+
+SSH Local Port Forwarding Through a Local Port
+
+Internet Host:
+ssh student@172.16.1.15 -L 1111:172.16.40.10:22 -NT
+ssh student@localhost -p 1111 -L 2222:172.16.82.106:80 -NT
+firefox localhost:2222
+
+Creates an additional local port on the local host that forwards to a target machine through the previous channel created.
+
+SSH Dynamic Port Forwarding
+
+Syntax: 
+
+ssh -D <port> -p <alt port> <user>@<pivot ip> -NT
+
+Proxychains default port is 9050
+Creates a dynamic socks4 proxy that interacts alone, or with a previously established remote or local port forward.
+Allows the use of scripts and other userspace programs through the tunnel.
+TCP only.
+Can't ping, need to do a -PN no ping for nmap scans to work.
+ALT port for this command is coming from the previous ssh tunnel/session
+
+SSH Dynamic Port Forwarding 1-Step
+Blue Private Host-1:
+ssh student@172.16.82.106 -D 9050 -NT
+
+proxychains ./scan.sh
+proxychains ssh student@10.10.0.40
+
+SSH Dynamic Port Forwarding 2-Step
+Blue Private Host-1:
+ssh student@172.16.82.106 -L 1111:10.10.0.40:22 -NT
+ssh student@localhost -D 9050 -p 1111 -NT
+
+proxychains curl ftp://www.onlineftp.ch
+proxychains wget -r www.espn.com
+proxychains ./scan.sh
+proxychains ssh student@172.16.101.2
+
+SSH Remote Port Forwarding
+
+Syntax:
+ssh -p <optional alt port> <user>@<remote ip> -R <remote bind port>:<tgt ip>:<tgt port> -NT
+or
+ssh -R <remote bind port>:<tgt ip>:<tgt port> -p <alt port> <user>@<remote ip> -NT
+
+SSH Remote Port Forwarding
+Blue Host-1
+ssh student@10.10.0.40 -R 1111:localhost:80 -NT
+
+Creates a remote port on the remote’s local host that forwards to the target specified.
+
+SSH Remote and Local Port Forwarding
+
+Blue Private Host-1:
+ssh student@172.16.82.106 -R 1111:localhost:22 -NT
+
+Internet Host:
+ssh student@172.16.82.106 -L 2222:localhost:1111 -NT
+
+Internet Host:
+ssh localhost -p 2222
+
+Creates a remote port on a remote machine, staging a connection.
+Also creates a local port on the localhost to connect to the previously staged connection.
+Login to extra1 via the net1 local port forward
+
+
+
+
+
+
+
+
+
+
+
