@@ -23,3 +23,72 @@ Passive recon methodology
 find / -name flag* 2> /dev/null
 tcpdump -XXA port 23 (sniff for passwords in the clear only if suggested)
 
+
+Passive recon methodology
+
+1. Hostname
+
+2. Interfaces and
+subnets, ip a, ifconfig
+
+3. Neighbors: arp
+-a, ip neigh
+
+4. Files of
+interest: find
+
+5. Other ports
+listening? ss -nftp
+
+6. Tools? which,
+tcpdump, wireshark, nmap, telnet, wget, curl, nc
+
+6a. We may have to
+sniff for additional creds in the clear if hinded to do so(use
+tcpdump to sniff for telnet traffic)
+
+
+Network Recon Methodology:
+
+1. Host discovery
+(nmap, nc, ping sweep, scan.sh)
+
+2. Port discovery
+(nmap, nc, scan.sh)
+
+3. Port validation
+(banner grab -nc)
+
+4. Follow on a
+ctions based on the ports found
+
+4a. if it 21 or 80,
+wget -r IP or wget -r ftp://IP
+
+4b. if its 22 or 23,
+connect to it and do passive recon
+
+
+
+Scanning Methodoly:
+
+quick scan ports
+21-23 80
+
+Well known port:
+1-1023
+
+Chuck of 200 or scan
+first 10000
+
+
+Ping Sweep:
+
+for i in {1..254} ;do (ping -c 1 192.168.1.$i 2> /dev/null | grep "bytes from" &) ;done
+
+Tcpdump for listening on a port being "Attacked"
+tcpdump -i eth1 -vv -XX port 69
+
+
+Change ttl
+iptables -t mangle -A POSTROUTING -j TTL --ttl-set 64
